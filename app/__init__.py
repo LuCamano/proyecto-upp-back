@@ -16,9 +16,3 @@ def create_app() -> FastAPI:
     app.include_router(router, prefix="/api/v1", tags=["api"])
     
     return app
-
-app = create_app()
-
-@app.get("/")
-async def root():
-    return {"message": "Hola, mundo!"}
