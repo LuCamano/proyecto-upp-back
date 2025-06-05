@@ -1,11 +1,15 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 SMTP_SERVER = 'smtp.office365.com'
 SMTP_PORT = 587
-SMTP_USER = 'upp@ucsc.cl'
-SMTP_PASSWORD = 'EquipoUnidad8'
+SMTP_USER = os.getenv('SMTP_USER')
+SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
 
 def send_emails(subject, messages):
     print(f'Enviando correos a: {[msg["email"] for msg in messages]}')
