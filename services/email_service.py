@@ -1,34 +1,24 @@
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-import os
-from dotenv import load_dotenv
+from typing import List
+from fastapi_mail import FastMail, MessageSchema, MessageType
+from pydantic import BaseModel, EmailStr
+from app.config import CON_CONFIG
 
-load_dotenv()
+class EmailBody(BaseModel):
+    first_name: str
+    last_name: str
+class EmailSchema(BaseModel):
+    subject: str
+    email: List[EmailStr]
+    body: EmailBody
+    
 
-SMTP_SERVER = 'smtp.office365.com'
-SMTP_PORT = 587
-SMTP_USER = os.getenv('SMTP_USER')
-SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')
-
-def send_emails(subject, messages):
-    print(f'Enviando correos a: {[msg["email"] for msg in messages]}')
-
-    with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-        server.starttls()
-        server.login(SMTP_USER, SMTP_PASSWORD)
-
-        for msg in messages:
-            print(f'Enviando a: {msg["email"]}')
-
-            email_msg = MIMEMultipart('alternative')
-            email_msg['From'] = SMTP_USER
-            email_msg['To'] = msg['email']
-            email_msg['Subject'] = subject
-
-            html_part = MIMEText(msg['html'], 'html')
-            email_msg.attach(html_part)
-
-            server.sendmail(SMTP_USER, msg['email'], email_msg.as_string())
-
-            print(f'Correo enviado a: {msg["email"]}')
+async def send_emails(email: EmailSchema):
+    message = MessageSchema(
+        subject=email.subject,  # Subject of the email
+        recipients=email.email,  # List of email addresses
+        template_body=email.body.model_dump(),
+        subtype=MessageType.html
+    )
+    
+    fm = FastMail(CON_CONFIG)
+    await fm.send_message(message, template_name="plantilla estudiante.html")

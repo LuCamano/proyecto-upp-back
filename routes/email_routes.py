@@ -1,16 +1,15 @@
+import logging
 from fastapi import APIRouter, HTTPException
-from app.services.email_service import send_emails
+from fastapi.responses import JSONResponse
+from services.email_service import send_emails, EmailSchema
 
 router = APIRouter()
 
 @router.post("/send-email")
-async def send_email_route(payload: dict):
-    subject = payload.get('subject')
-    messages = payload.get('messages')
-
+async def send_emails_route(email: EmailSchema):
     try:
-        send_emails(subject, messages)
-        return {"message": "Correos enviados correctamente"}
+        await send_emails(email)
+        return JSONResponse(status_code=200, content="Correos enviados correctamente")
     except Exception as e:
-        print(f'Error al enviar correos: {e}')
-        raise HTTPException(status_code=500, detail="Error al enviar correos")
+        logging.error(f'Error al enviar correos: {e}')
+        raise HTTPException(status_code=500, detail="Error al enviar correos", headers={"X-Error": str(e)})

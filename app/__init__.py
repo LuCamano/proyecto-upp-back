@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.email_routes import router as email_router
+from routes.email_routes import router as email_router
 from contextlib import asynccontextmanager
 from routes import router
 from .db import create_db_and_tables
@@ -24,5 +24,6 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
     app.include_router(router, prefix="/api/v1", tags=["api"])
+    app.include_router(email_router, prefix="/api/v1/email", tags=["email"])
     
     return app
