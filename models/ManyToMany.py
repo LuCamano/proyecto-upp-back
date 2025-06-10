@@ -1,5 +1,5 @@
-from sqlmodel import SQLModel, Field
 from typing import Optional
+from sqlmodel import SQLModel, Field
 from uuid import UUID
 
 class DirectivoEstablecimientoBase(SQLModel):

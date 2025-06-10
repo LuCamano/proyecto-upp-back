@@ -11,6 +11,3 @@ class EstudianteBase(SQLModel):
     carrera_id: int = Field(foreign_key="carrera.id", description="ID de la carrera del estudiante", nullable=False)
     comuna_id: int = Field(foreign_key="comuna.id", description="ID de la comuna del estudiante", nullable=False)
     tutor_id: Optional[int] = Field(default=None, foreign_key="tutor.id", description="ID del tutor del estudiante (opcional)", nullable=True)
-    
-class Estudiante(EstudianteBase, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True, description="ID del estudiante")

@@ -10,6 +10,3 @@ class FichaBase(SQLModel):
     fecha_inicio: date = Field(description="Fecha de inicio de la ficha", nullable=False)
     fecha_termino: Optional[date] = Field(default=None, description="Fecha de término de la ficha", nullable=True)
     fecha_envio: date = Field(description="Fecha de envío de la ficha al estudiante", nullable=False)
-    
-class Ficha(FichaBase, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True, description="ID de la ficha")

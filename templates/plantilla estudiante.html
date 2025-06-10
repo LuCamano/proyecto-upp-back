@@ -4,13 +4,13 @@
 	</head>
 	<body>
 		<p>Estimado/a estudiante<br>
-		<strong>{{first_name}} {{last_name}}</strong></p>
-		<p>Junto con saludar, se informa que, desde la coordinación de gestión de centros de Práctica de la UPP, ha sido adscrito/a a <strong>LICEO LA ASUNCIÓN</strong>, para desarrollar su Práctica Pedagógica I, que inicia la semana del 17 de marzo hasta la semana del 16 de junio 2025.</p>
+		<strong>{{estudiante.nombre}} {{estudiante.ap_paterno}} {{estudiante.ap_materno}}</strong></p>
+		<p>Junto con saludar, se informa que, desde la coordinación de gestión de centros de Práctica de la UPP, ha sido adscrito/a a <strong>{{nombre_establecimiento}}</strong>, para desarrollar su {{nivel_practica}}, que inicia la semana del 17 de marzo hasta la semana del 16 de junio 2025.</p>
 		<p>Los datos de contacto del establecimiento son:</p>
 		<ul>
-			<li>Nombre directivo: Javiera Alarcón</li>
-			<li>Cargo: Directora Académica</li>
-			<li>Correo electrónico: jalarconb@lla.cl</li>
+			<li>Nombre directivo: {{directivo.nombre}}</li>
+			<li>Cargo: {{directivo.cargo}}</li>
+			<li>Correo electrónico: {{directivo.email}}</li>
 		</ul>
 		<p>Posterior a este correo, deberá coordinar el inicio de su pasantía de acuerdo al calendario de prácticas UCSC y hacer entrega de su carpeta de práctica y documentación personal, que incluye:</p>
 		<ul>
