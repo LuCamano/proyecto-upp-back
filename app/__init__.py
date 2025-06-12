@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.email_routes import router as email_router
-from contextlib import asynccontextmanager
+from routes.CargaMasivaRoutes import router as carga_masiva_router
 from routes import router
+from contextlib import asynccontextmanager
 from .db import create_db_and_tables
 
 @asynccontextmanager
@@ -25,5 +26,5 @@ def create_app() -> FastAPI:
     )
     app.include_router(router, prefix="/api/v1", tags=["api"])
     app.include_router(email_router, prefix="/api/v1/email", tags=["email"])
-    
+    app.include_router(carga_masiva_router, prefix="/api/v1/carga_masiva", tags=["carga_masiva"])
     return app

@@ -19,21 +19,21 @@
         <tbody>
             <tr>
                 <td>P. PROFESIONAL</td>
-                <td>Semana 10 de marzo</td>
-                <td>Semana 16 de junio</td>
-                <td>15</td>
+                <td>{{semana_inicio_profesional}}</td>
+                <td>{{semana_termino_profesional}}</td>
+                <td>{{numero_semanas_profesional}}</td>
             </tr>
             <tr>
-                <td>PPV - PPIV - PPIII – PPII - PPI</td>
-                <td>Semana 17 de marzo</td>
-                <td>Semana 16 de junio</td>
-                <td>14</td>
+                <td>PPV - PPIV - PPIII - PPII - PPI</td>
+                <td>{{semana_inicio_pp}}</td>
+                <td>{{semana_termino_pp}}</td>
+                <td>{{numero_semanas_pp}}</td>
             </tr>
         </tbody>
     </table>
 
     <p>La nómina de estudiantes adscritos a su establecimiento se informa en la siguiente tabla:</p>
-    <table>
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
         <thead>
             <tr>
                 <th>RUT</th>
@@ -52,11 +52,12 @@
                 <td>{{ ficha.estudiante.nombre }}</td>
                 <td>{{ ficha.estudiante.ap_paterno }}</td>
                 <td>{{ ficha.estudiante.ap_materno }}</td>
-                <td>{{ ficha.estudiante.correo }}</td>
+                <td>{{ ficha.estudiante.email }}</td>
                 <td>{{ ficha.fecha_inicio }}</td>
                 <td>{{ ficha.fecha_termino }}</td>
             </tr>
             {% endfor %}
+        </tbody>
     </table>
 
     <p>Al iniciar su pasantía, cada estudiante deberá hacer entrega de su carpeta de práctica con:</p>

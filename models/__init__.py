@@ -11,7 +11,6 @@ from .NivelPracticaModel import NivelPracticaBase
 from .EstudianteModel import EstudianteBase
 from .CupoModel import CupoBase
 from .FichaModel import FichaBase
-from .ManyToMany import DirectivoEstablecimiento, DirectivoEstablecimientoBase
 
 class Comuna(ComunaBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -27,7 +26,7 @@ class Directivo(DirectivoBase, table=True):
     
 class Establecimiento(EstablecimientoBase, table=True):
     id: Optional[UUID] = Field(default_factory=uuid4, primary_key=True, description="ID del establecimiento")
-    directivos: List["Directivo"] = Relationship(link_model=DirectivoEstablecimiento)
+    directivos: List["Directivo"] = Relationship()
     
 class NivelPractica(NivelPracticaBase, table=True):
     __tablename__ = "nivel_practica"

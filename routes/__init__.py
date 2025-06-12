@@ -160,7 +160,7 @@ async def create_directivo(session: SessionDep, directivo: models.DirectivoBase,
 
 @router.get("/directivos/{directivo_id}", response_model=models.Directivo)
 async def read_directivo(directivo_id: int, session: SessionDep):
-    controller = BaseCrudService(models.Directivo)
+    controller = DirectivoService()
     try:
         db_directivo = controller.read(session, directivo_id)
         return db_directivo
@@ -169,7 +169,7 @@ async def read_directivo(directivo_id: int, session: SessionDep):
     
 @router.get("/directivos", response_model=list[models.Directivo])
 async def read_all_directivos(session: SessionDep):
-    controller = BaseCrudService(models.Directivo)
+    controller = DirectivoService()
     try:
         directivos = controller.all(session)
         return directivos
@@ -178,7 +178,7 @@ async def read_all_directivos(session: SessionDep):
     
 @router.put("/directivos/{directivo_id}", response_model=models.Directivo)
 async def update_directivo(directivo_id: int, directivo: models.DirectivoBase, session: SessionDep):
-    controller = BaseCrudService(models.Directivo)
+    controller = DirectivoService()
     try:
         updated_directivo = controller.update(session, directivo_id, directivo)
         return updated_directivo
@@ -187,7 +187,7 @@ async def update_directivo(directivo_id: int, directivo: models.DirectivoBase, s
     
 @router.delete("/directivos/{directivo_id}")
 async def delete_directivo(directivo_id: int, session: SessionDep):
-    controller = BaseCrudService(models.Directivo)
+    controller = DirectivoService()
     try:
         result = controller.delete(session, directivo_id)
         return result
