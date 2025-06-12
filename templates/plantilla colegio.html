@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body style="font-family:Arial, sans-serif; margin:0; padding:20px;">
+    <p>Estimado/a {{directivo.nombre}}:<br />
+    Le saludo de manera cordial en nombre de la Unidad de Práctica Pedagógica (UPP) de la Facultad de Educación de la Universidad Católica de la Santísima Concepción, y presento a usted, en su calidad de jefe de UTP del COLEGIO POLIVALENTE DOMINGO PARRA CORVALÁN el inicio de las pasantías de estudiantes de Pedagogía de nuestra Facultad, de acuerdo con el siguiente calendario de prácticas UCSC primer semestre 2025:</p>
+
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th>NIVEL DE PRÁCTICA</th>
+                <th>FECHA INICIO</th>
+                <th>FECHA TÉRMINO</th>
+                <th>Nº SEMANAS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>P. PROFESIONAL</td>
+                <td>{{semana_inicio_profesional}}</td>
+                <td>{{semana_termino_profesional}}</td>
+                <td>{{numero_semanas_profesional}}</td>
+            </tr>
+            <tr>
+                <td>PPV - PPIV - PPIII - PPII - PPI</td>
+                <td>{{semana_inicio_pp}}</td>
+                <td>{{semana_termino_pp}}</td>
+                <td>{{numero_semanas_pp}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>La nómina de estudiantes adscritos a su establecimiento se informa en la siguiente tabla:</p>
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th>RUT</th>
+                <th>NOMBRE</th>
+                <th>APELLIDO PATERNO</th>
+                <th>APELLIDO MATERNO</th>
+                <th>EMAIL</th>
+                <th>SEMANA INICIO</th>
+                <th>SEMANA TERMINO</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ficha in fichas %}
+            <tr>
+                <td>{{ ficha.estudiante.rut }}</td>
+                <td>{{ ficha.estudiante.nombre }}</td>
+                <td>{{ ficha.estudiante.ap_paterno }}</td>
+                <td>{{ ficha.estudiante.ap_materno }}</td>
+                <td>{{ ficha.estudiante.email }}</td>
+                <td>{{ ficha.fecha_inicio }}</td>
+                <td>{{ ficha.fecha_termino }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>Al iniciar su pasantía, cada estudiante deberá hacer entrega de su carpeta de práctica con:</p>
+    <ul>
+        <li>Certificado de Antecedentes</li>
+        <li>Certificado de Inhabilidades para trabajar con menores de edad</li>
+        <li>Certificado de Inhabilidades por maltrato relevante</li>
+        <li>Horario universitario</li>
+        <li>Otra documentación</li>
+    </ul>
+
+    <p>Eventualmente, esta nómina puede variar en consideración a los cupos autorizados por su establecimiento. Finalmente, como UPP agradecemos el espacio formativo otorgado por su comunidad educativa.</p>
+    <p>Se despide atentamente,<br />
+    Equipo Unidad de Prácticas Pedagógicas UCSC</p>
+</body>
+</html>
