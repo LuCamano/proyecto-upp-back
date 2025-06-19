@@ -6,6 +6,8 @@ from app.config import CON_CONFIG
 from app.db import SessionDep
 from models import Directivo, Ficha
 from uuid import UUID
+from app.scheduler import scheduler
+from datetime import datetime
 
 class EmailSchema(BaseModel):
     subject: str
@@ -70,9 +72,21 @@ async def send_student_email(session: SessionDep, email: EmailSchema, ficha_id: 
         template_body=body.model_dump(),
         subtype=MessageType.html
     )
-    
     fm = FastMail(CON_CONFIG)
-    await fm.send_message(message, template_name="plantilla estudiante.html")
+    # Programar el envío usando APScheduler
+    def send_mail_job():
+        import asyncio
+        try:
+            asyncio.run(fm.send_message(message, template_name="plantilla estudiante.html"))
+        except Exception as e:
+            print(f"[APScheduler] Error al enviar correo a {email.email}: {e}")
+    # Convertir fecha_envio a datetime si es necesario
+    run_date = ficha.fecha_envio
+    if isinstance(run_date, str):
+        run_date = datetime.fromisoformat(run_date)
+    scheduler.add_job(send_mail_job, 'date', run_date=run_date)
+    # Opcional: retornar información de la programación
+    return {"status": "scheduled", "run_date": str(run_date)}
 
 async def send_stablishment_email(session: SessionDep, email: EmailSchema, body: StablishmentBody, establecimiento_id: UUID):
     fichas = session.exec(select(Ficha).where(Ficha.establecimiento_id == establecimiento_id)).all()
