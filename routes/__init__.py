@@ -150,10 +150,10 @@ async def delete_tutor(tutor_id: int, session: SessionDep):
 ## Directivo Routes
 # CRUD operations for Directivo model
 @router.post("/directivos", response_model=models.Directivo)
-async def create_directivo(session: SessionDep, directivo: models.DirectivoBase, establecimiento_id: UUID):
+async def create_directivo(session: SessionDep, directivo: models.DirectivoBase):
     controller = DirectivoService()
     try:
-        db_directivo = controller.create(session, directivo, establecimiento_id)
+        db_directivo = controller.create(session, directivo)
         return db_directivo
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -206,7 +206,7 @@ async def create_establecimiento(session: SessionDep, establecimiento: models.Es
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/establecimientos/{establecimiento_id}", response_model=models.Establecimiento)
-async def read_establecimiento(establecimiento_id: int, session: SessionDep):
+async def read_establecimiento(establecimiento_id: UUID, session: SessionDep):
     controller = BaseCrudService(models.Establecimiento)
     try:
         db_establecimiento = controller.read(session, establecimiento_id)
@@ -224,7 +224,7 @@ async def read_all_establecimientos(session: SessionDep):
         raise HTTPException(status_code=500, detail=str(e))
     
 @router.put("/establecimientos/{establecimiento_id}", response_model=models.Establecimiento)
-async def update_establecimiento(establecimiento_id: int, establecimiento: models.EstablecimientoBase, session: SessionDep):
+async def update_establecimiento(establecimiento_id: UUID, establecimiento: models.EstablecimientoBase, session: SessionDep):
     controller = BaseCrudService(models.Establecimiento)
     try:
         updated_establecimiento = controller.update(session, establecimiento_id, establecimiento)
@@ -233,7 +233,7 @@ async def update_establecimiento(establecimiento_id: int, establecimiento: model
         raise HTTPException(status_code=404, detail=str(e))
     
 @router.delete("/establecimientos/{establecimiento_id}")
-async def delete_establecimiento(establecimiento_id: int, session: SessionDep):
+async def delete_establecimiento(establecimiento_id: UUID, session: SessionDep):
     controller = BaseCrudService(models.Establecimiento)
     try:
         result = controller.delete(session, establecimiento_id)
