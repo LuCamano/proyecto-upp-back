@@ -1,6 +1,8 @@
 ## Antes de ejecutar el resto de la aplicación, es importante cargar las variables de entorno
-# from dotenv import load_dotenv
-# load_dotenv()
+USE_DOTENV = True
+if USE_DOTENV:
+    from dotenv import load_dotenv
+    load_dotenv()
 
 from app import create_app
 
