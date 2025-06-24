@@ -23,10 +23,11 @@ class Carrera(CarreraBase, table=True):
     
 class Directivo(DirectivoBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, description="ID del directivo")
-    
+    establecimiento: "Establecimiento" = Relationship(back_populates="directivos")
+
 class Establecimiento(EstablecimientoBase, table=True):
     id: Optional[UUID] = Field(default_factory=uuid4, primary_key=True, description="ID del establecimiento")
-    directivos: List["Directivo"] = Relationship()
+    directivos: List["Directivo"] = Relationship(back_populates="establecimiento")
     
 class NivelPractica(NivelPracticaBase, table=True):
     __tablename__ = "nivel_practica"

@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8" />
-</head>
-<body style="font-family:Arial, sans-serif; margin:0; padding:20px;">
-    <p>Estimado/a {{directivo.nombre}}:<br />
-    Le saludo de manera cordial en nombre de la Unidad de Práctica Pedagógica (UPP) de la Facultad de Educación de la Universidad Católica de la Santísima Concepción, y presento a usted, en su calidad de jefe de UTP del COLEGIO POLIVALENTE DOMINGO PARRA CORVALÁN el inicio de las pasantías de estudiantes de Pedagogía de nuestra Facultad, de acuerdo con el siguiente calendario de prácticas UCSC primer semestre 2025:</p>
+<html>
+    <head>
+        <meta charset="UTF-8">
+    </head>
+
+<body>
+    <p>Estimado/a {{directivo.nombre}}:<br>
+    Le saludo de manera cordial en nombre de la Unidad de Práctica Pedagógica (UPP) de la Facultad de Educación de la Universidad Católica de la Santísima Concepción, y presento a usted, en su calidad de {{directivo.cargo}} del {{establecimiento.nombre}} el inicio de las pasantías de estudiantes de Pedagogía de nuestra Facultad, de acuerdo con el siguiente calendario de prácticas UCSC primer semestre 2025:</p>
 
     <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
         <thead>
@@ -33,6 +33,7 @@
     </table>
 
     <p>La nómina de estudiantes adscritos a su establecimiento se informa en la siguiente tabla:</p>
+    
     <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
         <thead>
             <tr>
@@ -70,7 +71,7 @@
     </ul>
 
     <p>Eventualmente, esta nómina puede variar en consideración a los cupos autorizados por su establecimiento. Finalmente, como UPP agradecemos el espacio formativo otorgado por su comunidad educativa.</p>
-    <p>Se despide atentamente,<br />
+    <p>Se despide atentamente,<br>
     Equipo Unidad de Prácticas Pedagógicas UCSC</p>
 </body>
 </html>

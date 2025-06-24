@@ -17,10 +17,10 @@ MODELOS = [
     Estudiante,
     Cupo,
     NivelPractica,
+    Directivo,
     Establecimiento,
     Carrera,
     Tutor,
-    Directivo,
     Comuna
 ]
 

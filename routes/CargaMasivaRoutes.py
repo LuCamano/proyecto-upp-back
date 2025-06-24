@@ -33,4 +33,4 @@ async def vaciar_db(session: SessionDep):
         vaciado_db(session)
         return {"message": "Database cleared successfully."}
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An unexpected error occurred.")
+        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
