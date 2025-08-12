@@ -5,7 +5,7 @@ if USE_DOTENV:
     load_dotenv()
 
 import locale
-locale.setlocale(locale.LC_TIME, 'es_CL.UTF-8')
+locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 
 from app import create_app
 

@@ -11,7 +11,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copia el resto del código de la aplicación
 COPY . .
 
+RUN apt-get update && \
+    apt-get install -y locales && \
+    sed -i -e 's/# es_ES.UTF-8/es_ES.UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales
+
 # Establece las variables de entorno en el contenedor
+ENV LANG=es_ES.UTF-8
+ENV LC_TIME=es_ES.UTF-8
 ENV DATABASE_URL=""
 ENV SMTP_USER=""
 ENV SMTP_PASSWORD=""
