@@ -7,7 +7,7 @@ from app.db import SessionDep
 from models import Directivo, Establecimiento, Ficha, Estudiante
 from uuid import UUID
 from app.scheduler import scheduler
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 class EmailSchema(BaseModel):
     subject: str
@@ -68,8 +68,8 @@ async def send_student_email(session: SessionDep, email: EmailSchema, ficha_id: 
         },
         nombre_establecimiento=ficha.establecimiento.nombre,
         nivel_practica=ficha.cupo.nivel_practica.nombre,
-        semana_inicio=ficha.fecha_inicio.isoformat() if hasattr(ficha, 'fecha_inicio') and ficha.fecha_inicio else str(ficha.fecha_inicio) if ficha.fecha_inicio else '',
-        semana_termino=ficha.fecha_termino.isoformat() if hasattr(ficha, 'fecha_termino') and ficha.fecha_termino else str(ficha.fecha_termino) if ficha.fecha_termino else ''
+        semana_inicio=ficha.fecha_inicio.strftime("%d-%B") if hasattr(ficha, 'fecha_inicio') and ficha.fecha_inicio else str(ficha.fecha_inicio) if ficha.fecha_inicio else '',
+        semana_termino=ficha.fecha_termino.strftime("%d-%B") if hasattr(ficha, 'fecha_termino') and ficha.fecha_termino else str(ficha.fecha_termino) if ficha.fecha_termino else ''
     )
     message = MessageSchema(
         subject=email.subject,
@@ -111,6 +111,8 @@ async def send_stablishment_email(session: SessionDep, email: EmailSchema, body:
     for f in fichas:
         fichaData = f.model_dump()
         fichaData["estudiante"] = session.exec(select(Estudiante).where(Estudiante.id == f.estudiante_id)).first().model_dump()
+        fichaData["fecha_inicio"] = date.fromisoformat(f.fecha_inicio).strftime("%d-%B") if f.fecha_inicio else ''
+        fichaData["fecha_termino"] = date.fromisoformat(f.fecha_termino).strftime("%d-%B") if f.fecha_termino else ''
         data["fichas"].append(fichaData)
 
     message = MessageSchema(

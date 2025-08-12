@@ -4,7 +4,11 @@ if USE_DOTENV:
     from dotenv import load_dotenv
     load_dotenv()
 
+import locale
+locale.setlocale(locale.LC_TIME, 'es_CL.UTF-8')
+
 from app import create_app
+
 
 app = create_app()
 
