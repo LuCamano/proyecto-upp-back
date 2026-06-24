@@ -2,16 +2,19 @@ from typing import List, Dict, Optional
 from fastapi_mail import FastMail, MessageSchema, MessageType
 from sqlmodel import select
 from pydantic import BaseModel, EmailStr
+from fastapi import HTTPException
 from app.config import CON_CONFIG
 from app.db import SessionDep
-from models import Directivo, Establecimiento, Ficha, Estudiante
+from models import Directivo, Establecimiento, Ficha, Estudiante, Carrera, Cupo, NivelPractica
 from uuid import UUID
 from app.scheduler import scheduler
-from datetime import datetime, timezone, date
+from datetime import datetime, timezone
+
 
 class EmailSchema(BaseModel):
     subject: str
     email: List[EmailStr]
+
 
 class StudentBody(BaseModel):
     estudiante: Dict[str, str] = {
@@ -29,6 +32,7 @@ class StudentBody(BaseModel):
     semana_inicio: str
     semana_termino: str
 
+
 class StablishmentBody(BaseModel):
     directivo: Optional[Directivo]
     establecimiento: Optional[Establecimiento]
@@ -40,21 +44,86 @@ class StablishmentBody(BaseModel):
     numero_semanas_pp: int
     fichas: List[Ficha]
 
-# async def send_emails(email: EmailSchema):
-#     message = MessageSchema(
-#         subject=email.subject,  # Subject of the email
-#         recipients=email.email,  # List of email addresses
-#         template_body=email.body.model_dump(),
-#         subtype=MessageType.html
-#     )
-    
-#     fm = FastMail(CON_CONFIG)
-#     await fm.send_message(message, template_name="plantilla estudiante.html")
-    
+
+def _format_fecha(fecha) -> str:
+    if not fecha:
+        return ""
+    try:
+        return fecha.strftime("%d de %B, %Y")
+    except Exception:
+        return str(fecha)
+
+
+def _resolve_carrera_nombre(session: SessionDep, estudiante: Estudiante) -> str:
+    try:
+        if hasattr(estudiante, "carrera") and estudiante.carrera:
+            if hasattr(estudiante.carrera, "nombre"):
+                return estudiante.carrera.nombre or ""
+    except Exception:
+        pass
+
+    try:
+        if getattr(estudiante, "carrera_id", None):
+            carrera = session.get(Carrera, estudiante.carrera_id)
+            if carrera and hasattr(carrera, "nombre"):
+                return carrera.nombre or ""
+    except Exception:
+        pass
+
+    return ""
+
+
+def _resolve_nivel_practica_nombre(session: SessionDep, ficha: Ficha) -> str:
+    try:
+        if hasattr(ficha, "cupo") and ficha.cupo:
+            if hasattr(ficha.cupo, "nivel_practica") and ficha.cupo.nivel_practica:
+                if hasattr(ficha.cupo.nivel_practica, "nombre"):
+                    return ficha.cupo.nivel_practica.nombre or ""
+    except Exception:
+        pass
+
+    try:
+        if getattr(ficha, "cupo_id", None):
+            cupo = session.get(Cupo, ficha.cupo_id)
+            if cupo and getattr(cupo, "nivel_practica_id", None):
+                nivel = session.get(NivelPractica, cupo.nivel_practica_id)
+                if nivel and hasattr(nivel, "nombre"):
+                    return nivel.nombre or ""
+    except Exception:
+        pass
+
+    return ""
+
+
+def _build_estudiante_data_for_template(session: SessionDep, ficha: Ficha) -> Optional[Dict]:
+    try:
+        estudiante = ficha.estudiante if hasattr(ficha, "estudiante") else None
+    except Exception:
+        estudiante = None
+
+    if not estudiante and getattr(ficha, "estudiante_id", None):
+        estudiante = session.get(Estudiante, ficha.estudiante_id)
+
+    if not estudiante:
+        return None
+
+    estudiante_data = estudiante.model_dump()
+    estudiante_data["carrera"] = _resolve_carrera_nombre(session, estudiante)
+
+    ficha_data = ficha.model_dump()
+    ficha_data["estudiante"] = estudiante_data
+    ficha_data["nivel_practica"] = _resolve_nivel_practica_nombre(session, ficha)
+    ficha_data["fecha_inicio"] = _format_fecha(ficha.fecha_inicio)
+    ficha_data["fecha_termino"] = _format_fecha(ficha.fecha_termino)
+
+    return ficha_data
+
+
 async def send_student_email(session: SessionDep, email: EmailSchema, ficha_id: int):
     ficha = session.get(Ficha, ficha_id)
     if not ficha:
         raise ValueError("No se encontró la ficha con el ID proporcionado.")
+
     body = StudentBody(
         estudiante={
             "nombre": ficha.estudiante.nombre,
@@ -68,52 +137,75 @@ async def send_student_email(session: SessionDep, email: EmailSchema, ficha_id: 
         },
         nombre_establecimiento=ficha.establecimiento.nombre,
         nivel_practica=ficha.cupo.nivel_practica.nombre,
-        semana_inicio=ficha.fecha_inicio.strftime("%d-%B") if hasattr(ficha, 'fecha_inicio') and ficha.fecha_inicio else str(ficha.fecha_inicio) if ficha.fecha_inicio else '',
-        semana_termino=ficha.fecha_termino.strftime("%d-%B") if hasattr(ficha, 'fecha_termino') and ficha.fecha_termino else str(ficha.fecha_termino) if ficha.fecha_termino else ''
+        semana_inicio=ficha.fecha_inicio.strftime("%d-%B") if hasattr(ficha, "fecha_inicio") and ficha.fecha_inicio else str(ficha.fecha_inicio) if ficha.fecha_inicio else "",
+        semana_termino=ficha.fecha_termino.strftime("%d-%B") if hasattr(ficha, "fecha_termino") and ficha.fecha_termino else str(ficha.fecha_termino) if ficha.fecha_termino else ""
     )
+
     message = MessageSchema(
         subject=email.subject,
         recipients=email.email,
         template_body=body.model_dump(),
         subtype=MessageType.html
     )
+
     fm = FastMail(CON_CONFIG)
-    # Programar el envío usando APScheduler
+
     def send_mail_job():
         import asyncio
+        import traceback
         try:
             asyncio.run(fm.send_message(message, template_name="plantilla estudiante.html"))
+            print(f"[APScheduler] Correo enviado correctamente a {email.email}")
         except Exception as e:
-            print(f"[APScheduler] Error al enviar correo a {email.email}: {e}")
-    # Convertir fecha_envio a datetime UTC si es necesario
+            print(f"[APScheduler] Error al enviar correo a {email.email}: {repr(e)}")
+            traceback.print_exc()
+
     run_date = ficha.fecha_envio
     if isinstance(run_date, str):
         run_date = datetime.fromisoformat(run_date)
+
     if run_date.tzinfo is None:
         run_date = run_date.replace(tzinfo=timezone.utc)
     else:
         run_date = run_date.astimezone(timezone.utc)
-    scheduler.add_job(send_mail_job, 'date', run_date=run_date)
-    # Opcional: retornar información de la programación
+
+    scheduler.add_job(send_mail_job, "date", run_date=run_date)
+    print(f"[APScheduler] Correo programado para {email.email} en {run_date}")
+
     return {"status": "scheduled", "run_date": str(run_date)}
 
+
 async def send_stablishment_email(session: SessionDep, email: EmailSchema, body: StablishmentBody, establecimiento_id: UUID):
-    body.establecimiento = session.exec(select(Establecimiento).where(Establecimiento.id == establecimiento_id)).first()
+    body.establecimiento = session.exec(
+        select(Establecimiento).where(Establecimiento.id == establecimiento_id)
+    ).first()
+
     if not body.establecimiento:
         raise ValueError("No se encontró el establecimiento con el ID proporcionado.")
+
     if not body.directivo:
         body.directivo = body.establecimiento.directivos[0] if body.establecimiento.directivos else None
+
     if not body.directivo:
         raise ValueError("No se encontró un directivo asociado al establecimiento.")
-    fichas = body.fichas or session.exec(select(Ficha).where(Ficha.establecimiento_id == establecimiento_id)).all()
+
+    fichas = body.fichas or session.exec(
+        select(Ficha).where(Ficha.establecimiento_id == establecimiento_id)
+    ).all()
+
     data = body.model_dump()
     data["fichas"] = []
+
     for f in fichas:
-        fichaData = f.model_dump()
-        fichaData["estudiante"] = session.exec(select(Estudiante).where(Estudiante.id == f.estudiante_id)).first().model_dump()
-        fichaData["fecha_inicio"] = date.fromisoformat(f.fecha_inicio).strftime("%d-%B") if f.fecha_inicio else ''
-        fichaData["fecha_termino"] = date.fromisoformat(f.fecha_termino).strftime("%d-%B") if f.fecha_termino else ''
-        data["fichas"].append(fichaData)
+        ficha_db = session.get(Ficha, f.id) if getattr(f, "id", None) else f
+        if not ficha_db:
+            continue
+
+        ficha_data = _build_estudiante_data_for_template(session, ficha_db)
+        if ficha_data:
+            data["fichas"].append(ficha_data)
+
+    print("DEBUG FICHAS EMAIL COLEGIO:", data["fichas"])
 
     message = MessageSchema(
         subject=email.subject,
@@ -121,6 +213,18 @@ async def send_stablishment_email(session: SessionDep, email: EmailSchema, body:
         template_body=data,
         subtype=MessageType.html
     )
-    
+
     fm = FastMail(CON_CONFIG)
-    await fm.send_message(message, template_name="plantilla colegio.html")
+
+    try:
+        await fm.send_message(message, template_name="plantilla colegio.html")
+        print(f"[EMAIL COLEGIO] Correo enviado correctamente a {email.email}")
+        return {"status": "sent"}
+    except Exception as e:
+        import traceback
+        print(f"[EMAIL COLEGIO] Error enviando a {email.email}: {repr(e)}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error al enviar correo al establecimiento: {str(e)}"
+        )

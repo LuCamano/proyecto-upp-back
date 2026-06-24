@@ -1,77 +1,179 @@
 <html>
-    <head>
-        <meta charset="UTF-8">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Correo establecimiento</title>
+</head>
+<body style="margin:0; padding:0; background-color:#ffffff; font-family: Arial, Helvetica, sans-serif; color:#333333; line-height:1.5;">
+    <div style="max-width:900px; margin:0 auto; padding:24px;">
 
-<body>
-    <p>Estimado/a {{directivo.nombre}}:<br>
-    Le saludo de manera cordial en nombre de la Unidad de Práctica Pedagógica (UPP) de la Facultad de Educación de la Universidad Católica de la Santísima Concepción, y presento a usted, en su calidad de {{directivo.cargo}} del {{establecimiento.nombre}} el inicio de las pasantías de estudiantes de Pedagogía de nuestra Facultad, de acuerdo con el siguiente calendario de prácticas UCSC primer semestre 2025:</p>
+        <p style="margin:0 0 16px 0;">
+            Estimado/a <strong>{{ directivo.nombre }}</strong>:
+        </p>
 
-    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
-        <thead>
-            <tr>
-                <th>NIVEL DE PRÁCTICA</th>
-                <th>FECHA INICIO</th>
-                <th>FECHA TÉRMINO</th>
-                <th>Nº SEMANAS</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>P. PROFESIONAL</td>
-                <td>{{semana_inicio_profesional}}</td>
-                <td>{{semana_termino_profesional}}</td>
-                <td>{{numero_semanas_profesional}}</td>
-            </tr>
-            <tr>
-                <td>PPV - PPIV - PPIII - PPII - PPI</td>
-                <td>{{semana_inicio_pp}}</td>
-                <td>{{semana_termino_pp}}</td>
-                <td>{{numero_semanas_pp}}</td>
-            </tr>
-        </tbody>
-    </table>
+        <p style="margin:0 0 16px 0;">
+            Reciba un cordial saludo de parte de la Unidad de Prácticas Pedagógicas (UPP), de la
+            Facultad de Educación de la Universidad Católica de la Santísima Concepción.
+        </p>
 
-    <p>La nómina de estudiantes adscritos a su establecimiento se informa en la siguiente tabla:</p>
-    
-    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
-        <thead>
-            <tr>
-                <th>RUT</th>
-                <th>NOMBRE</th>
-                <th>APELLIDO PATERNO</th>
-                <th>APELLIDO MATERNO</th>
-                <th>EMAIL</th>
-                <th>SEMANA INICIO</th>
-                <th>SEMANA TERMINO</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for ficha in fichas %}
-            <tr>
-                <td>{{ ficha.estudiante.rut }}</td>
-                <td>{{ ficha.estudiante.nombre }}</td>
-                <td>{{ ficha.estudiante.ap_paterno }}</td>
-                <td>{{ ficha.estudiante.ap_materno }}</td>
-                <td>{{ ficha.estudiante.email }}</td>
-                <td>{{ ficha.fecha_inicio }}</td>
-                <td>{{ ficha.fecha_termino }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <p style="margin:0 0 16px 0;">
+            Nos dirigimos a usted, en su calidad de <strong>{{ directivo.cargo }}</strong> de
+            <strong>{{ establecimiento.nombre }}</strong>, para informarle el inicio del período de
+            pasantías de nuestros/as estudiantes de Pedagogía correspondiente al primer semestre del año 2026,
+            de acuerdo con el siguiente calendario de prácticas:
+        </p>
 
-    <p>Al iniciar su pasantía, cada estudiante deberá hacer entrega de su carpeta de práctica con:</p>
-    <ul>
-        <li>Certificado de Antecedentes</li>
-        <li>Certificado de Inhabilidades para trabajar con menores de edad</li>
-        <li>Certificado de Inhabilidades por maltrato relevante</li>
-        <li>Horario universitario</li>
-        <li>Otra documentación</li>
-    </ul>
+        <table style="width:100%; border-collapse:collapse; margin:0 0 20px 0; font-size:14px;">
+            <thead>
+                <tr>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left;">NIVEL DE PRÁCTICA</th>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left;">SEMANA DE INICIO</th>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left;">SEMANA DE TÉRMINO</th>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left;">Nº SEMANAS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border:1px solid #cccccc; padding:10px;">P. PROFESIONAL</td>
+                    <td style="border:1px solid #cccccc; padding:10px;">{{ semana_inicio_profesional }}</td>
+                    <td style="border:1px solid #cccccc; padding:10px;">{{ semana_termino_profesional }}</td>
+                    <td style="border:1px solid #cccccc; padding:10px;">{{ numero_semanas_profesional }}</td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid #cccccc; padding:10px;">PPV - PPIV - PPIII - PPII - PPI</td>
+                    <td style="border:1px solid #cccccc; padding:10px;">{{ semana_inicio_pp }}</td>
+                    <td style="border:1px solid #cccccc; padding:10px;">{{ semana_termino_pp }}</td>
+                    <td style="border:1px solid #cccccc; padding:10px;">{{ numero_semanas_pp }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <p>Eventualmente, esta nómina puede variar en consideración a los cupos autorizados por su establecimiento. Finalmente, como UPP agradecemos el espacio formativo otorgado por su comunidad educativa.</p>
-    <p>Se despide atentamente,<br>
-    Equipo Unidad de Prácticas Pedagógicas UCSC</p>
+        <p style="margin:0 0 12px 0;">
+            Para su conocimiento, encontrará la nómina de estudiantes asignados/as a su establecimiento
+            en las siguientes tablas:
+        </p>
+
+        <p style="margin:0 0 8px 0; font-weight:bold;">
+            1. Datos del estudiante
+        </p>
+
+        <table style="width:100%; border-collapse:collapse; margin:0 0 20px 0; font-size:13px; table-layout:fixed;">
+            <thead>
+                <tr>
+                    <th style="border:1px solid #cccccc; padding:8px; background:#f5f5f5; text-align:left;">RUT</th>
+                    <th style="border:1px solid #cccccc; padding:8px; background:#f5f5f5; text-align:left;">NOMBRE</th>
+                    <th style="border:1px solid #cccccc; padding:8px; background:#f5f5f5; text-align:left;">APELLIDO PATERNO</th>
+                    <th style="border:1px solid #cccccc; padding:8px; background:#f5f5f5; text-align:left;">APELLIDO MATERNO</th>
+                    <th style="border:1px solid #cccccc; padding:8px; background:#f5f5f5; text-align:left;">EMAIL</th>
+                    <th style="border:1px solid #cccccc; padding:8px; background:#f5f5f5; text-align:left;">CARRERA</th>
+                    <th style="border:1px solid #cccccc; padding:8px; background:#f5f5f5; text-align:left;">NIVEL DE PRÁCTICA</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ficha in fichas %}
+                <tr>
+                    <td style="border:1px solid #cccccc; padding:8px; vertical-align:top; word-break:break-word;">{{ ficha.estudiante.rut }}</td>
+                    <td style="border:1px solid #cccccc; padding:8px; vertical-align:top; word-break:break-word;">{{ ficha.estudiante.nombre }}</td>
+                    <td style="border:1px solid #cccccc; padding:8px; vertical-align:top; word-break:break-word;">{{ ficha.estudiante.ap_paterno }}</td>
+                    <td style="border:1px solid #cccccc; padding:8px; vertical-align:top; word-break:break-word;">{{ ficha.estudiante.ap_materno }}</td>
+                    <td style="border:1px solid #cccccc; padding:8px; vertical-align:top; word-break:break-word;">{{ ficha.estudiante.email }}</td>
+                    <td style="border:1px solid #cccccc; padding:8px; vertical-align:top; word-break:break-word;">{{ ficha.estudiante.carrera }}</td>
+                    <td style="border:1px solid #cccccc; padding:8px; vertical-align:top; word-break:break-word;">{{ ficha.nivel_practica }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p style="margin:0 0 12px 0;">
+            Al momento de iniciar su práctica, cada estudiante entregará su carpeta de práctica, la cual
+            incluye la siguiente documentación:
+        </p>
+
+        <ul style="margin:0 0 16px 20px; padding:0;">
+            <li style="margin-bottom:6px;">Certificado de Antecedentes</li>
+            <li style="margin-bottom:6px;">Certificado de Inhabilidades para trabajar con menores de edad</li>
+            <li style="margin-bottom:6px;">Certificado de Inhabilidades por maltrato relevante</li>
+            <li style="margin-bottom:6px;">Horario universitario</li>
+            <li style="margin-bottom:6px;">Declaración de Seguro</li>
+            <li style="margin-bottom:6px;">Otra documentación</li>
+        </ul>
+
+        <p style="margin:0 0 16px 0;">
+            En caso de existir modificaciones, se enviará oportunamente la actualización de la lista, ya que
+            el proceso de inscripción de asignaturas aún se encuentra en curso y también dependemos de los
+            cupos que ustedes gentilmente nos autoricen.
+        </p>
+
+        <p style="margin:0 0 16px 0;">
+            Desde ya, agradecemos profundamente la disposición y el compromiso de su comunidad educativa al
+            recibir a nuestros/as futuros/as docentes. Sabemos que este espacio formativo es clave para su
+            desarrollo profesional, y su colaboración lo hace posible.
+        </p>
+
+        <p style="margin:0 0 12px 0;">
+            Frente a consultas o inquietudes, comunicarse con las coordinadoras según carrera:
+        </p>
+
+        <table style="width:100%; border-collapse:collapse; margin:0 0 20px 0; font-size:14px;">
+            <thead>
+                <tr>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left; width:18%;">COORDINADORA</th>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left; width:52%;">CARRERA</th>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left; width:30%;">CONTACTO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">Tamara Luna</td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        <ul style="margin:0; padding-left:18px;">
+                            <li>Pedagogía Educación Media en Lenguaje y Comunicación</li>
+                            <li>Pedagogía en Educación Básica</li>
+                            <li>Programa de Formación Pedagógica</li>
+                        </ul>
+                    </td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        tluna@ucsc.cl<br>
+                        +56 412347128
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">Cecilia Castro</td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        <ul style="margin:0; padding-left:18px;">
+                            <li>Educación de Párvulos</li>
+                            <li>Pedagogía en Educación Diferencial</li>
+                        </ul>
+                    </td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        cecilia.castro@ucsc.cl<br>
+                        +56 412345384
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">Vanessa Salgado</td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        <ul style="margin:0; padding-left:18px;">
+                            <li>Pedagogía en Educación Media en Biología y Ciencias Naturales</li>
+                            <li>Pedagogía en Educación Física</li>
+                            <li>Pedagogía en Educación Media en Matemática</li>
+                            <li>Pedagogía en Educación Media en Inglés</li>
+                        </ul>
+                    </td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        vanessa.salgado@ucsc.cl<br>
+                        +56 412347135
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin:0;">
+            Atentamente,<br>
+            Equipo Unidad de Prácticas Pedagógicas UCSC<br>
+            Facultad de Educación<br>
+            Universidad Católica de la Santísima Concepción
+        </p>
+
+    </div>
 </body>
 </html>

@@ -1,33 +1,117 @@
 <html>
-	<head>
-		<meta charset="UTF-8">
-	</head>
-	<body>
-		<p>Estimado/a estudiante<br>
-		<strong>{{estudiante.nombre}} {{estudiante.ap_paterno}} {{estudiante.ap_materno}}</strong></p>
-		<p>Junto con saludar, se informa que, desde la coordinación de gestión de centros de Práctica de la UPP, ha sido adscrito/a a <strong>{{nombre_establecimiento}}</strong>, para desarrollar su {{nivel_practica}}, que inicia la semana del {{semana_inicio}} hasta la semana del {{semana_termino}}.</p>
-		<p>Los datos de contacto del establecimiento son:</p>
-		<ul>
-			<li>Nombre directivo: {{directivo.nombre}}</li>
-			<li>Cargo: {{directivo.cargo}}</li>
-			<li>Correo electrónico: {{directivo.email}}</li>
-		</ul>
-		<p>Posterior a este correo, deberá coordinar el inicio de su pasantía de acuerdo al calendario de prácticas UCSC y hacer entrega de su carpeta de práctica y documentación personal, que incluye:</p>
-		<ul>
-			<li>Certificado de Antecedentes</li>
-			<li>Certificado de Inhabilidades para trabajar con menores de edad</li>
-			<li>Certificado de Inhabilidades por maltrato relevante</li>
-			<li>Horario universitario</li>
-			<li>Otra documentación</li>
-		</ul>
-		<p>Se informa, además, que el equipo directivo del establecimiento está en conocimiento de su adscripción y por tanto es importante que asista presencialmente al centro educativo.</p>
-		<p>Atentamente,<br>
-		Coordinación de Gestión de Centros de Práctica Pedagógica<br>
-		Unidad de Práctica Pedagógica<br>
-		Facultad de Educación<br>
-		Universidad Católica de la Santísima Concepción<br>
-		Alonso de Ribera 2850 - Concepción - Chile<br>
-		Fono +56 412345859<br>
-		www.ucsc.cl</p>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <title>Correo estudiante</title>
+</head>
+<body style="margin:0; padding:0; background-color:#ffffff; font-family: Arial, Helvetica, sans-serif; color:#333333; line-height:1.5;">
+    <div style="max-width:900px; margin:0 auto; padding:24px;">
+
+        <p style="margin:0 0 8px 0;">Estimado/a estudiante</p>
+
+        <p style="margin:0 0 16px 0;">
+            <strong>{{ estudiante.nombre }} {{ estudiante.ap_paterno }} {{ estudiante.ap_materno }}</strong>
+        </p>
+
+        <p style="margin:0 0 16px 0;">
+            Junto con saludar, escribimos desde la Unidad de Práctica de la UPP para informarle que has
+            sido asignado/a a <strong>{{ nombre_establecimiento }}</strong>, para realizar su
+            <strong>{{ nivel_practica }}</strong>, la cual se desarrollará entre el
+            <strong>{{ semana_inicio }}</strong> y la semana del <strong>{{ semana_termino }}</strong>.
+        </p>
+
+        <p style="margin:0 0 12px 0;">
+            A continuación, le compartimos los datos de contacto del establecimiento:
+        </p>
+
+        <ul style="margin:0 0 16px 20px; padding:0;">
+            <li style="margin-bottom:6px;">Nombre directivo: {{ directivo.nombre }}</li>
+            <li style="margin-bottom:6px;">Cargo: {{ directivo.cargo }}</li>
+            <li style="margin-bottom:6px;">Correo electrónico: {{ directivo.email }}</li>
+        </ul>
+
+        <p style="margin:0 0 12px 0;">
+            Posterior a este correo, deberá coordinar el inicio de su pasantía de acuerdo al calendario de
+            prácticas UCSC y hacer entrega de su carpeta de práctica y documentación personal, que incluye:
+        </p>
+
+        <ul style="margin:0 0 16px 20px; padding:0;">
+            <li style="margin-bottom:6px;">Certificado de Antecedentes</li>
+            <li style="margin-bottom:6px;">Certificado de Inhabilidades para trabajar con menores de edad</li>
+            <li style="margin-bottom:6px;">Certificado de Inhabilidades por maltrato relevante</li>
+            <li style="margin-bottom:6px;">Horario universitario</li>
+            <li style="margin-bottom:6px;">Otra documentación</li>
+        </ul>
+
+        <p style="margin:0 0 16px 0;">
+            Se informa, además, que el equipo directivo del establecimiento está en conocimiento de su
+            adscripción y por tanto es importante que asista presencialmente al centro educativo.
+        </p>
+
+        <p style="margin:0 0 12px 0;">
+            Frente a consultas o inquietudes, comunicarse con la coordinadora según carrera:
+        </p>
+
+        <table style="width:100%; border-collapse:collapse; margin:0 0 20px 0; font-size:14px;">
+            <thead>
+                <tr>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left; width:18%;">COORDINADORA</th>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left; width:52%;">CARRERA</th>
+                    <th style="border:1px solid #cccccc; padding:10px; background:#f5f5f5; text-align:left; width:30%;">CONTACTO</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">Tamara Luna</td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        <ul style="margin:0; padding-left:18px;">
+                            <li>Pedagogía Educación Media en Lenguaje y Comunicación</li>
+                            <li>Pedagogía en Educación Básica</li>
+                            <li>Programa de Formación Pedagógica</li>
+                        </ul>
+                    </td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        tluna@ucsc.cl<br>
+                        +56 412347128
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">Cecilia Castro</td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        <ul style="margin:0; padding-left:18px;">
+                            <li>Educación de Párvulos</li>
+                            <li>Pedagogía en Educación Diferencial</li>
+                        </ul>
+                    </td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        cecilia.castro@ucsc.cl<br>
+                        +56 412345384
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">Vanessa Salgado</td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        <ul style="margin:0; padding-left:18px;">
+                            <li>Pedagogía en Educación Media en Biología y Ciencias Naturales</li>
+                            <li>Pedagogía en Educación Física</li>
+                            <li>Pedagogía en Educación Media en Matemática</li>
+                            <li>Pedagogía en Educación Media en Inglés</li>
+                        </ul>
+                    </td>
+                    <td style="border:1px solid #cccccc; padding:10px; vertical-align:top;">
+                        vanessa.salgado@ucsc.cl<br>
+                        +56 412347135
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin:0;">
+            Atentamente,<br>
+            Equipo Unidad de Práctica Pedagógica<br>
+            Facultad de Educación<br>
+            Universidad Católica de la Santísima Concepción
+        </p>
+
+    </div>
+</body>
 </html>
