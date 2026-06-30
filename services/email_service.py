@@ -2,7 +2,6 @@ from typing import List, Dict, Optional
 from fastapi_mail import FastMail, MessageSchema, MessageType
 from sqlmodel import select
 from pydantic import BaseModel, EmailStr
-from fastapi import HTTPException
 from app.config import CON_CONFIG
 from app.db import SessionDep
 from models import Directivo, Establecimiento, Ficha, Estudiante, Carrera, Cupo, NivelPractica
@@ -164,10 +163,10 @@ async def send_student_email(session: SessionDep, email: EmailSchema, ficha_id: 
     if isinstance(run_date, str):
         run_date = datetime.fromisoformat(run_date)
 
-    if run_date.tzinfo is None:
-        run_date = run_date.replace(tzinfo=timezone.utc)
-    else:
-        run_date = run_date.astimezone(timezone.utc)
+    # if run_date.tzinfo is None:
+    #     run_date = run_date.replace(tzinfo=timezone.utc)
+    # else:
+    #     run_date = run_date.astimezone(timezone.utc)
 
     scheduler.add_job(send_mail_job, "date", run_date=run_date)
     print(f"[APScheduler] Correo programado para {email.email} en {run_date}")
@@ -224,7 +223,5 @@ async def send_stablishment_email(session: SessionDep, email: EmailSchema, body:
         import traceback
         print(f"[EMAIL COLEGIO] Error enviando a {email.email}: {repr(e)}")
         traceback.print_exc()
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error al enviar correo al establecimiento: {str(e)}"
-        )
+        ## Reenviar el error para que sea manejado por la ruta que llama a esta función
+        raise e
