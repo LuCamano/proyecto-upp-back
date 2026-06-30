@@ -1,7 +1,7 @@
 # Guía de Desarrollo
 
 ## Requisitos Previos
-- Python 3.10 o superior
+- Python 3.13 o superior
 - Entorno virtual (recomendado)
 - Servidor PostgreSQL configurado y accesible
 
@@ -22,7 +22,7 @@
    ```
    pip install -r requirements.txt
    ```
-4. Configurar la variable `DATABASE_URL` en el archivo `.env`.
+4. Configurar las variables `DATABASE_URL`, `SMTP_USER`, `SMTP_PASSWORD` en el archivo `.env`.
 
 ## Ejecución
 1. Ejecutar la aplicación:
