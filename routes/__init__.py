@@ -428,3 +428,50 @@ async def delete_ficha(ficha_id: int, session: SessionDep):
         return result
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+## FechaClave Routes
+# CRUD operations for FechaClave model
+@router.post("/fechasclave", response_model=models.FechaClave)
+async def create_fecha_clave(session: SessionDep, fecha_clave: models.FechaClave):
+    controller = BaseCrudService(models.FechaClave)
+    try:
+        db_fecha_clave = controller.create(session, fecha_clave)
+        return db_fecha_clave
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@router.get("/fechasclave/{nombre}", response_model=models.FechaClave)
+async def read_fecha_clave(nombre: str, session: SessionDep):
+    controller = BaseCrudService(models.FechaClave)
+    try:
+        db_fecha_clave = controller.read(session, nombre)
+        return db_fecha_clave
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    
+@router.get("/fechasclave", response_model=list[models.FechaClave])
+async def read_all_fechas_clave(session: SessionDep):
+    controller = BaseCrudService(models.FechaClave)
+    try:
+        fechas_clave = controller.all(session)
+        return fechas_clave
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@router.put("/fechasclave/{nombre}", response_model=models.FechaClave)
+async def update_fecha_clave(nombre: str, fecha_clave: models.FechaClave, session: SessionDep):
+    controller = BaseCrudService(models.FechaClave)
+    try:
+        updated_fecha_clave = controller.update(session, nombre, fecha_clave)
+        return updated_fecha_clave
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    
+@router.delete("/fechasclave/{nombre}")
+async def delete_fecha_clave(nombre: str, session: SessionDep):
+    controller = BaseCrudService(models.FechaClave)
+    try:
+        result = controller.delete(session, nombre)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))

@@ -11,6 +11,7 @@ from .NivelPracticaModel import NivelPracticaBase
 from .EstudianteModel import EstudianteBase
 from .CupoModel import CupoBase
 from .FichaModel import FichaBase
+from .FechaClave import FechaClave
 
 class Comuna(ComunaBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)

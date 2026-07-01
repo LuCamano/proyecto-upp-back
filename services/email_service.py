@@ -7,7 +7,7 @@ from app.db import SessionDep
 from models import Directivo, Establecimiento, Ficha, Estudiante, Carrera, Cupo, NivelPractica
 from uuid import UUID
 from app.scheduler import scheduler
-from datetime import datetime, timezone
+from datetime import datetime, date, timezone
 
 
 class EmailSchema(BaseModel):
@@ -44,7 +44,7 @@ class StablishmentBody(BaseModel):
     fichas: List[Ficha]
 
 
-def _format_fecha(fecha) -> str:
+def _format_fecha(fecha: date) -> str:
     if not fecha:
         return ""
     try:
